@@ -409,6 +409,7 @@ void hsu_early_console_init(const char *s)
 	u8 lcr;
 	int *clkctl;
 
+#if 0
 	if (intel_mid_identify_cpu() == INTEL_MID_CPU_CHIP_TANGIER) {
 		paddr = MERR_HSU_PORT_BASE;
 		clkctl = (int *)set_fixmap_offset_nocache(FIX_CLOCK_CTL,
@@ -427,6 +428,12 @@ void hsu_early_console_init(const char *s)
 
 	paddr += port * 0x80;
 	phsu = (void *)set_fixmap_offset_nocache(FIX_EARLYCON_MEM_BASE, paddr);
+#else
+//http://git.mmlx.us/?p=linux-edison.git;a=commitdiff;h=e732d5deb63553f53b125700b474f61fad7a3fc0;hp=671c181428c8e759b20a3f340e0cc4b4da977e32
+//http://git.mmlx.us/?p=linux-edison.git;a=commitdiff;h=25c5737165333561863336d4e71283911efe1867;hp=e732d5deb63553f53b125700b474f61fad7a3fc0
+	phsu = (void *) early_ioremap(0xff010180, 0x80);
+	return;
+#endif
 
 	/* Disable FIFO */
 	writeb(0x0, phsu + UART_FCR);
